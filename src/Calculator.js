@@ -1,5 +1,55 @@
 import { styled } from "goober";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+function Calculator() {
+    const [ value, setValue ] = useState("0");
+    const regexJustNumbers = /^[0-9,.]*$/;
+    function handleKeyDown(e) {
+        regexJustNumbers.test(e.key) ? setValue(value + e.key) : setValue(value);
+    }
+
+    useEffect(() => {
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, []);
+    
+    return (
+        <Main>
+            <Hdr>CalCulator</Hdr>
+            <Nums>
+                <Inpt value={value}/>
+            </Nums>
+            <Nums>
+                <BtnWidth onClick={() => {setValue(0)}}>C</BtnWidth>
+                <Operator >%</Operator>
+                <Operator onClick={() => {setValue(value + "÷")}} >÷</Operator>
+            </Nums>
+            <Nums>
+                <Btn onClick={() => value == "0" ? setValue("7") : setValue(value + "6")}>7</Btn>
+                <Btn onClick={() => value == "0" ? setValue("8") : setValue(value + "6")}>8</Btn>
+                <Btn onClick={() => value == "0" ? setValue("9") : setValue(value + "9")}>9</Btn>
+                <Operator onClick={() => {setValue(value + "x")}} >x</Operator>
+            </Nums>
+            <Nums>
+                <Btn onClick={() => value == "0" ? setValue("4") : setValue(value + "4")}>4</Btn>
+                <Btn onClick={() => value == "0" ? setValue("5") : setValue(value + "5")}>5</Btn>
+                <Btn onClick={() => value == "0" ? setValue("6") : setValue(value + "6")}>6</Btn>
+                <Operator onClick={() => setValue(value + "-")}>-</Operator>
+            </Nums>
+            <Nums>
+                <Btn onClick={() => value == "0" ? setValue("1") : setValue(value + "1")}>1</Btn>
+                <Btn onClick={() => value == "0" ? setValue("2") : setValue(value + "2")}>2</Btn>
+                <Btn onClick={() => value == "0" ? setValue("3") : setValue(value + "3")}>3</Btn>
+                <Operator onClick={() => {setValue(value + "+")}}>+</Operator>
+            </Nums>   
+            <Nums>
+                <BtnWidth onClick={() => value.startsWith("0") ? setValue(value) : setValue(value + "0")}>0</BtnWidth>
+                <Btn onClick={() => value.includes(".") ? setValue(value) : setValue(value + ".")}>.</Btn>
+                <Operator >=</Operator>
+            </Nums>
+        </Main>
+    );
+}
 
 const Main = styled("div")`
 padding: 30px;
@@ -60,50 +110,5 @@ align-items: center;
 gap: 5px;
 margin-top: 5px;
 `;
-
-function Calculator() {
-    const [ value, setValue ] = useState("0");
-
-    document.addEventListener("keydown", e => {
-        console.log(e);
-    });
-    
-    return (
-        <Main>
-            <Hdr>CalCulator</Hdr>
-            <Nums>
-                <Inpt value={value}/>
-            </Nums>
-            <Nums>
-                <BtnWidth onClick={() => {setValue(0)}}>C</BtnWidth>
-                <Operator >%</Operator>
-                <Operator onClick={() => {setValue(value + "÷")}} >÷</Operator>
-            </Nums>
-            <Nums>
-                <Btn onClick={() => value == "0" ? setValue("7") : setValue(value + "6")}>7</Btn>
-                <Btn onClick={() => value == "0" ? setValue("8") : setValue(value + "6")}>8</Btn>
-                <Btn onClick={() => value == "0" ? setValue("9") : setValue(value + "9")}>9</Btn>
-                <Operator onClick={() => {setValue(value + "x")}} >x</Operator>
-            </Nums>
-            <Nums>
-                <Btn onClick={() => value == "0" ? setValue("4") : setValue(value + "4")}>4</Btn>
-                <Btn onClick={() => value == "0" ? setValue("5") : setValue(value + "5")}>5</Btn>
-                <Btn onClick={() => value == "0" ? setValue("6") : setValue(value + "6")}>6</Btn>
-                <Operator onClick={() => setValue(value + "-")}>-</Operator>
-            </Nums>
-            <Nums>
-                <Btn onClick={() => value == "0" ? setValue("1") : setValue(value + "1")}>1</Btn>
-                <Btn onClick={() => value == "0" ? setValue("2") : setValue(value + "2")}>2</Btn>
-                <Btn onClick={() => value == "0" ? setValue("3") : setValue(value + "3")}>3</Btn>
-                <Operator onClick={() => {setValue(value + "+")}}>+</Operator>
-            </Nums>   
-            <Nums>
-                <BtnWidth onClick={() => value.startsWith("0") ? setValue(value) : setValue(value + "0")}>0</BtnWidth>
-                <Btn onClick={() => value.includes(".") ? setValue(value) : setValue(value + ".")}>.</Btn>
-                <Operator >=</Operator>
-            </Nums>
-        </Main>
-    );
-}
 
 export default Calculator;

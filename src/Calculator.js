@@ -1,17 +1,25 @@
 import { styled } from "goober";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 function Calculator() {
     const [ value, setValue ] = useState("0");
-    const regexJustNumbers = /^[0-9,.]*$/;
-    function handleKeyDown(e) {
+    const regexJustNumbers = /^[0-9.,]*$/;
+    const handleKeyDown = useCallback( (e) => {
+        console.log(value)
+        if (e.key == ",") {
+            setValue(value + ".");
+        }
+        if (value == "0") {
+            setValue(e.key);
+            return
+        }
         regexJustNumbers.test(e.key) ? setValue(value + e.key) : setValue(value);
-    }
+    },[value]);
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);
-    }, []);
+    }, [handleKeyDown]);
     
     return (
         <Main>

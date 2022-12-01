@@ -3,14 +3,23 @@ import { useState, useEffect, useCallback } from "react";
 
 function Calculator() {
     const [ value, setValue ] = useState("0");
-    const regexJustNumbers = /^[0-9.,]*$/;
+    const regexJustNumbers = /^[0-9.,+-/*]*$/;
     const handleKeyDown = useCallback( (e) => {
-        console.log(value)
+        console.log(e.key)
         if (e.key == ",") {
             setValue(value + ".");
+            return
         }
-        if (value == "0") {
+        if (value == "0" && regexJustNumbers.test(e.key)) {
             setValue(e.key);
+            return
+        }
+        if (e.key == "Backspace" && value.length > 1) {
+            setValue(value.substring(0, value.length - 1));
+            return
+        }
+        if (e.key == "Backspace" && value.length == 1) {
+            setValue("0");
             return
         }
         regexJustNumbers.test(e.key) ? setValue(value + e.key) : setValue(value);
@@ -23,7 +32,7 @@ function Calculator() {
     
     return (
         <Main>
-            <Hdr>CalCulator</Hdr>
+            <Hdr>Calculator</Hdr>
             <Nums>
                 <Inpt value={value}/>
             </Nums>

@@ -4,8 +4,9 @@ import { useState, useEffect, useCallback } from "react";
 function Calculator() {
     const [ value, setValue ] = useState("0");
     const regexJustNumbers = /^[0-9.,+-/*]*$/;
+    const regexOperators = /^[\+\-\*\/\.]$/;
+
     const handleKeyDown = useCallback( (e) => {
-        console.log(e.key)
         if (e.key == ",") {
             setValue(value + ".");
             return
@@ -21,6 +22,10 @@ function Calculator() {
         if (e.key == "Backspace" && value.length == 1) {
             setValue("0");
             return
+        }
+        if (e.key == "Enter") {
+            console.log(`posledni symbol hodnoty: ${value[value.length - 1]}`)
+            console.log(regexOperators.test(value[value.length - 1]));
         }
         regexJustNumbers.test(e.key) ? setValue(value + e.key) : setValue(value);
     },[value]);
@@ -38,26 +43,26 @@ function Calculator() {
             </Nums>
             <Nums>
                 <BtnWidth onClick={() => {setValue(0)}}>C</BtnWidth>
-                <Operator >%</Operator>
-                <Operator onClick={() => {setValue(value + "÷")}} >÷</Operator>
+                <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value) : setValue(value + "%")}>%</Operator>
+                <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value) : setValue(value + "/")}>÷</Operator>
             </Nums>
             <Nums>
                 <Btn onClick={() => value == "0" ? setValue("7") : setValue(value + "6")}>7</Btn>
                 <Btn onClick={() => value == "0" ? setValue("8") : setValue(value + "6")}>8</Btn>
                 <Btn onClick={() => value == "0" ? setValue("9") : setValue(value + "9")}>9</Btn>
-                <Operator onClick={() => {setValue(value + "x")}} >x</Operator>
+                <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value) : setValue(value + "*")}>x</Operator>
             </Nums>
             <Nums>
                 <Btn onClick={() => value == "0" ? setValue("4") : setValue(value + "4")}>4</Btn>
                 <Btn onClick={() => value == "0" ? setValue("5") : setValue(value + "5")}>5</Btn>
                 <Btn onClick={() => value == "0" ? setValue("6") : setValue(value + "6")}>6</Btn>
-                <Operator onClick={() => setValue(value + "-")}>-</Operator>
+                <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value) : setValue(value + "-")}>-</Operator>
             </Nums>
             <Nums>
                 <Btn onClick={() => value == "0" ? setValue("1") : setValue(value + "1")}>1</Btn>
                 <Btn onClick={() => value == "0" ? setValue("2") : setValue(value + "2")}>2</Btn>
                 <Btn onClick={() => value == "0" ? setValue("3") : setValue(value + "3")}>3</Btn>
-                <Operator onClick={() => {setValue(value + "+")}}>+</Operator>
+                <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value) : setValue(value + "+")}>+</Operator>
             </Nums>   
             <Nums>
                 <BtnWidth onClick={() => value.startsWith("0") ? setValue(value) : setValue(value + "0")}>0</BtnWidth>
@@ -100,7 +105,7 @@ border: none;
 const Btn = styled("button")`
 color: white;
 width: 70px;
-height: 55px;
+height: 70px;
 border: 1px;
 border-radius: 5px;
 background-color: navy;

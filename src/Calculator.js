@@ -4,7 +4,11 @@ import { useState, useEffect, useCallback } from "react";
 function Calculator() {
     const [ value, setValue ] = useState("0");
     const regexJustNumbers = /^[0-9.,+-/*]*$/;
+<<<<<<< HEAD
     const regexOperators = /^[\+\-\*\/\.\%]$/;
+=======
+    const regexOperators = /^[\+\-\*\/\.]$/;
+>>>>>>> 5ebcd6b47ed8369f63dabf7cddce0294e121008d
 
     const handleKeyDown = useCallback( (e) => {
         if (e.key == ",") {
@@ -23,12 +27,18 @@ function Calculator() {
             setValue("0");
             return
         }
+<<<<<<< HEAD
         if (regexOperators.test(value[value.length - 1]) && regexJustNumbers.test(e.key)) {
             setValue(value.substring(0, value.length - 1) + e.key)
             return
         }
         if (e.key == "Enter") {
             
+=======
+        if (e.key == "Enter") {
+            console.log(`posledni symbol hodnoty: ${value[value.length - 1]}`)
+            console.log(regexOperators.test(value[value.length - 1]));
+>>>>>>> 5ebcd6b47ed8369f63dabf7cddce0294e121008d
         }
         regexJustNumbers.test(e.key) ? setValue(value + e.key) : setValue(value);
     },[value]);
@@ -46,26 +56,43 @@ function Calculator() {
             </Nums>
             <Nums>
                 <BtnWidth onClick={() => {setValue(0)}}>C</BtnWidth>
+<<<<<<< HEAD
                 <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value.substring(0, value.length - 1) + "%") : setValue(value + "%")}>%</Operator>
                 <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value.substring(0, value.length - 1) + "/") : setValue(value + "/")}>÷</Operator>
+=======
+                <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value) : setValue(value + "%")}>%</Operator>
+                <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value) : setValue(value + "/")}>÷</Operator>
+>>>>>>> 5ebcd6b47ed8369f63dabf7cddce0294e121008d
             </Nums>
             <Nums>
                 <Btn onClick={() => value == "0" ? setValue("7") : setValue(value + "6")}>7</Btn>
                 <Btn onClick={() => value == "0" ? setValue("8") : setValue(value + "6")}>8</Btn>
                 <Btn onClick={() => value == "0" ? setValue("9") : setValue(value + "9")}>9</Btn>
+<<<<<<< HEAD
                 <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value.substring(0, value.length - 1) + "*") : setValue(value + "*")}>x</Operator>
+=======
+                <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value) : setValue(value + "*")}>x</Operator>
+>>>>>>> 5ebcd6b47ed8369f63dabf7cddce0294e121008d
             </Nums>
             <Nums>
                 <Btn onClick={() => value == "0" ? setValue("4") : setValue(value + "4")}>4</Btn>
                 <Btn onClick={() => value == "0" ? setValue("5") : setValue(value + "5")}>5</Btn>
                 <Btn onClick={() => value == "0" ? setValue("6") : setValue(value + "6")}>6</Btn>
+<<<<<<< HEAD
                 <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value.substring(0, value.length - 1) + "-") : setValue(value + "-")}>-</Operator>
+=======
+                <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value) : setValue(value + "-")}>-</Operator>
+>>>>>>> 5ebcd6b47ed8369f63dabf7cddce0294e121008d
             </Nums>
             <Nums>
                 <Btn onClick={() => value == "0" ? setValue("1") : setValue(value + "1")}>1</Btn>
                 <Btn onClick={() => value == "0" ? setValue("2") : setValue(value + "2")}>2</Btn>
                 <Btn onClick={() => value == "0" ? setValue("3") : setValue(value + "3")}>3</Btn>
+<<<<<<< HEAD
                 <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value.substring(0, value.length - 1) + "+") : setValue(value + "+")}>+</Operator>
+=======
+                <Operator onClick={() => regexOperators.test(value[value.length - 1]) ? setValue(value) : setValue(value + "+")}>+</Operator>
+>>>>>>> 5ebcd6b47ed8369f63dabf7cddce0294e121008d
             </Nums>   
             <Nums>
                 <BtnWidth onClick={() => value.startsWith("0") ? setValue(value) : setValue(value + "0")}>0</BtnWidth>

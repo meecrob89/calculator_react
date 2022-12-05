@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 
 function Calculator() {
     const [ value, setValue ] = useState("0");
-    const regexJustNumbers = /^[0-9.,+-/*]*$/;
+    const regexJustNumbers = /^[0-9]*$/;
     const regexOperators = /^[\+\-\*\/\.]$/;
 
     const handleKeyDown = useCallback( (e) => {
@@ -23,12 +23,15 @@ function Calculator() {
             setValue("0");
             return
         }
-        (regexOperators.test(value[value.length - 1]) && regexJustNumbers.test(e.key)) ? setValue(value.substring(0, value.length - 1) + e.key) : setValue(value + e.key);
         if (e.key == "Enter") {
-            console.log("počítám")
+            console.log("počítám");
         }
-        regexJustNumbers.test(e.key) ? setValue(value + e.key) : setValue(value);
-    },[value]);
+
+        regexOperators.test(value[value.length - 1]) ? setValue(value.substring(0, value.length - 1) + e.key) : setValue(value + e.key);
+        if (regexJustNumbers.test(e.key)) {
+            setValue(value + e.key);
+        }
+        },[value]);
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);

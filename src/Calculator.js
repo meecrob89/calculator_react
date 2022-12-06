@@ -7,35 +7,44 @@ function Calculator() {
     const regexOperators = /^[\+\-\*\/\.\,]$/;
 
     const handleKeyDown = useCallback( (e) => {
+        // pokud uživatel stiskne čárku, přepíše se na tečku
         if (e.key == ",") {
             setValue(value + ".");
             return
         }
+        // pokud je hodnota 0 a uživatel stiskne číslo, hodnota se přepíše pouze na číslo a nula nezůstane na začátku řetězce
         if (value == "0" && regexJustNumbers.test(e.key)) {
             setValue(e.key);
             return
         }
-        if (e.key == "Backspace" && value.length > 1) {
+        // implementace funkčnosti mazání klávesou backspace
+        else if (e.key == "Backspace" && value.length > 1) {
             setValue(value.substring(0, value.length - 1));
             return
         }
-        if (e.key == "Backspace" && value.length == 1) {
+        // pokud je řetězec pouze jednomístný, mazání textu nastaví hodnotu na 0
+        else if  (e.key == "Backspace" && value.length == 1) {
             setValue("0");
             return
         }
-        if (((regexOperators.test(e.key) || regexJustNumbers.test(e.key))) && (!regexOperators.test(value[value.length - 1]))) {
-            setValue(value + e.key);
-            return
-        }
-        if (regexOperators.test(value[value.length - 1])) {
+        else if  ((regexJustNumbers.test(value[value.length - 1])) && (regexOperators.test(e.key)) ||
+            // poslední znak je operátor a uživatel stiskl číslo
+            (regexOperators.test(value[value.length - 1])) && (regexJustNumbers.test(e.key)) || 
+            // poslední znak je číslo a uživatel stiskl číslo
+            (regexJustNumbers.test(value[value.length - 1])) && (regexJustNumbers.test(e.key))) {
+                setValue(value + e.key)
+                return
+            }
+            // poslední znak je operátor a uživatel stiskl operátor
+        else if (regexOperators.test(value[value.length - 1]) && regexOperators.test(e.key)) {
             setValue(value.substring(0, value.length - 1) + e.key)
             return
-        }
-        if (e.key == "Enter") {
-            
+        } else if (e.key == "Enter") {
+            console.log("počítám")
+            return
         }
         },[value]);
-
+        
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown);
         return () => document.removeEventListener("keydown", handleKeyDown);

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 function Calculator() {
     const [ value, setValue ] = useState("0");
     const regexJustNumbers = /^[0-9]*$/;
-    const regexOperators = /^[\+\-\*\/\.]$/;
+    const regexOperators = /^[\+\-\*\/\.\,]$/;
 
     const handleKeyDown = useCallback( (e) => {
         if (e.key == ",") {
@@ -23,13 +23,16 @@ function Calculator() {
             setValue("0");
             return
         }
-        if (e.key == "Enter") {
-            console.log("počítám");
-        }
-
-        regexOperators.test(value[value.length - 1]) ? setValue(value.substring(0, value.length - 1) + e.key) : setValue(value + e.key);
-        if (regexJustNumbers.test(e.key)) {
+        if (((regexOperators.test(e.key) || regexJustNumbers.test(e.key))) && (!regexOperators.test(value[value.length - 1]))) {
             setValue(value + e.key);
+            return
+        }
+        if (regexOperators.test(value[value.length - 1])) {
+            setValue(value.substring(0, value.length - 1) + e.key)
+            return
+        }
+        if (e.key == "Enter") {
+            
         }
         },[value]);
 
